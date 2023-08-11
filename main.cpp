@@ -1,19 +1,13 @@
-/*******************************************************************************************
-*
-*   raylib-cpp [core] example - Basic window (adapted for HTML5 platform)
-*
-*   This example is prepared to compile for PLATFORM_WEB, PLATFORM_DESKTOP and PLATFORM_RPI
-*   As you will notice, code structure is slightly diferent to the other examples...
-*   To compile it for PLATFORM_WEB just uncomment #define PLATFORM_WEB at beginning
-*
-*   This example has been created using raylib-cpp (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
-*
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
-*
-********************************************************************************************/
+//Copyright (C) 2023 TroubleBall LLC. All rights reserved.
+//
+// Main  
+// main.cc
+//
+
+#include "menu_screen1.h"
 
 #include "raylib-cpp.hpp"
+
 
 #if defined(PLATFORM_WEB)
     #include <emscripten/emscripten.h>
@@ -36,21 +30,44 @@ void UpdateDrawFrame(void);     // Update and Draw one frame
 int main()
 {
     // Initialization
-    //--------------------------------------------------------------------------------------
-    raylib::Window window(screenWidth, screenHeight, "raylib-cpp [core] example - basic window");
+    const int screenWidth = 800;
+    const int screenHeight = 600;
 
-#if defined(PLATFORM_WEB)
-    emscripten_set_main_loop(UpdateDrawFrame, 0, 1);
-#else
-    SetTargetFPS(60);   // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    InitWindow(screenWidth, screenHeight, "Trouble Ball");
 
-    // Main game loop
-    while (!window.ShouldClose())    // Detect window close button or ESC key
-    {
-        UpdateDrawFrame();
+    // Initialize StartScreen
+    StartScreen start_screen;
+    InitStartScreen(&start_screen/*, "resources/your_title_font.ttf", "resources/your_button_font.ttf"*/);
+
+    SetTargetFPS(60);
+
+    while (!WindowShouldClose()) {
+        // Update
+        if (CheckCollisionPointRec(GetMousePosition(), start_screen.exit_button_.rect_) &&
+            IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            // Handle button click for the exit button
+            //CloseWindow(); // This will close the game window
+            break;
+        }
+
+        // Input
+        Vector2 mouse_pos = GetMousePosition();
+        bool startButtonPressed = CheckCollisionPointRec(mouse_pos, start_screen.start_button_.rect_) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+        bool exitButtonPressed = CheckCollisionPointRec(mouse_pos, start_screen.exit_button_.rect_) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+
+        // Draw
+        BeginDrawing();
+
+        DrawStartScreen(&start_screen);
+
+        EndDrawing();
     }
-#endif
+
+    // Unload resources
+    //UnloadStartScreen(&start_screen);
+
+    // De-Initialization
+    CloseWindow();
 
     return 0;
 }
@@ -70,8 +87,6 @@ void UpdateDrawFrame(void)
     BeginDrawing();
 
         ClearBackground(RAYWHITE);
-
-        DrawText("Congrats! You created your first raylib-cpp window!", 160, 200, 20, LIGHTGRAY);
 
     EndDrawing();
     //----------------------------------------------------------------------------------
