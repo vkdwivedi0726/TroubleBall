@@ -26,9 +26,18 @@ if (NOT raylib_cpp_FOUND)
 endif()
 
 # This is the main part:
-set(SOURCES main.cpp
-            menu_screen1.h
-            menu_screen1.cc)
+set(SOURCES ICommand.h
+            start_game_command.h
+            start_game_command.cc
+            exit_game_command.h
+            exit_game_command.cc
+            ICommandHandler.h
+            command_handler.h
+            command_handler.cc
+            menu_screen.h
+            menu_screen.cc
+            main.cc
+            )
 add_executable(${PROJECT_NAME} ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
 target_link_libraries(${PROJECT_NAME} PUBLIC raylib raylib_cpp)

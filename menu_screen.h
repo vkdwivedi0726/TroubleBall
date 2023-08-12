@@ -6,25 +6,19 @@
 
 #pragma once
 
-#include "raylib-cpp.hpp"
+#include "ICommand.h"
+#include "command_handler.h"
 
-typedef struct {
-    Rectangle rect_;
-    const char *text_;
-    Color base_color_;
-    Color hover_color_;
-} Button;
+#include <raylib-cpp.hpp>
 
-typedef struct {
-    Font title_font_;
-    Font button_font_;
-    Button start_button_;
-    Button exit_button_;
-} StartScreen;
+class MenuScreen {
+public:
+    MenuScreen(const raylib::Rectangle& startButtonRect, const raylib::Rectangle& exitButtonRect);
 
-void InitStartScreen(StartScreen *start_screen, const char *title_font_path,
-                    const char* button_font_path);
+    void Update();
 
-void DrawStartScreen(const StartScreen *start_screen);
+    void Draw();
 
-void UnloadStartScreen(StartScreen *start_screen);
+private:
+    CommandHandler command_handler_;
+};
