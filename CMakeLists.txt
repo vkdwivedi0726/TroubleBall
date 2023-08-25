@@ -26,21 +26,24 @@ if (NOT raylib_cpp_FOUND)
 endif()
 
 # This is the main part:
-set(SOURCES ICommand.h
-            start_game_command.h
-            start_game_command.cc
-            exit_game_command.h
-            exit_game_command.cc
-            ICommandHandler.h
-            command_handler.h
-            command_handler.cc
-            menu_screen.h
-            menu_screen.cc
+set(SOURCES IObject.h
+            ButtonObject/button.cc
+            IScreen.h
+            StartScreen/start_screen.cc
             main.cc
             )
 add_executable(${PROJECT_NAME} ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
 target_link_libraries(${PROJECT_NAME} PUBLIC raylib raylib_cpp)
+
+# Add include directories for your components
+target_include_directories(${PROJECT_NAME} PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/ButtonObject
+    ${CMAKE_CURRENT_SOURCE_DIR}/Event
+    ${CMAKE_CURRENT_SOURCE_DIR}/EventDispatcher
+    ${CMAKE_CURRENT_SOURCE_DIR}/StartScreen
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")
