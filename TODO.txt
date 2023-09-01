@@ -1,0 +1,28 @@
+# TODO List
+
+NOTE -- This list has been developed agaist piece of work with name of person who either added to list / or owns the work. This can be modified 
+    at any time by any developer willing to pick work , or with mutual understaing of what needs to be done can add new components to the list.
+
+Last updated -- 1st September 2023
+
+1. To make Boulder class more clean. If you look at boulder.cc files -- too many variables getting initialized / hard coded.
+    These variables should be grouped within a class and rendered based on level of the game currently running -- Vineet
+
+2. Integrate SqLite for storing user information -- Jeetendra
+
+3. Make use of more C++ concepts -- Vineet
+
+4. CMake needs to be cleaned with more interfaces and libraries separated out and not make a single executable. -- Vineet
+
+5. Main character with control -- Vineet
+
+6. Background and other game objects -- Vineet
+
+
+DONE :
+1. Basic setup 
+2. Basic clean interfaces
+3. Screen class -- Start screen, Game screen
+4. Object class -- Boulder, Button
+5. Animator
+6. Event Dispatcher (Handle any event)

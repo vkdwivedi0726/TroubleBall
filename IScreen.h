@@ -4,6 +4,9 @@
 // IScreen.h
 //
 
+#pragma once
+
+
 #include "IObject.h"
 
 #include <memory>

@@ -9,7 +9,7 @@
 #include "event.h"
 #include "start_screen.h"
 
-StartScreen::StartScreen() {
+StartScreen::StartScreen() : start_game_{false} {
     Load();
 }
 
@@ -20,14 +20,16 @@ void StartScreen::Load() {
     start_button_subid_ = start_button->Subscribe(ButtonPressEvent::EventId(), 
         [this](std::shared_ptr<IEventDispatcher::EventBase> event) {
         //Handle button press event
-        
+        auto button_event = std::dynamic_pointer_cast<ButtonPressEvent>(event);
+        start_game_ = true;
+            //StartGameScreen();
     });
     
     exit_button_subid_ = exit_button->Subscribe(ButtonPressEvent::EventId(), 
         [this](std::shared_ptr<IEventDispatcher::EventBase> event) {
         //Handle button press event
         auto button_event = std::dynamic_pointer_cast<ButtonPressEvent>(event);
-        if(button_event->GetButtonName() == "exit-button") {
+        if(button_event != nullptr) {
             Unload();
             CloseWindow();
         }
@@ -49,10 +51,10 @@ void StartScreen::Update(float delta_time)  {
 
         // Check if the button is clicked
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            auto button = std::dynamic_pointer_cast<Button>(obj);
-            if (button) {
-                if (CheckCollisionPointRec(GetMousePosition(), button->GetRect())) {
-                    button->OnInteraction();
+            auto button_event = std::dynamic_pointer_cast<Button>(obj);
+            if (button_event != nullptr) {
+                if (CheckCollisionPointRec(GetMousePosition(), button_event->GetRect())) {
+                    button_event->OnInteraction();
                 }
             }
         }
@@ -82,6 +84,14 @@ void StartScreen::RemoveObject(std::shared_ptr<IObject> object) {
                        }),
     start_screen_objects_.end());
 
+}
+
+void StartScreen::StartGameCb(std::function<void()> cb) {
+    start_game_cb_ = cb;
+}
+
+bool StartScreen::StartGame() const {
+    return start_game_;
 }
 
 void StartScreen::OnSceneEnter() {};
